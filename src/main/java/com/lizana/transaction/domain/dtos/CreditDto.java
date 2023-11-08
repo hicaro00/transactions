@@ -26,8 +26,8 @@ public class CreditDto {
   private BigDecimal totalInterest; // interes totales generados por el credito
   private BigDecimal availableCredit; // saldo disponoble del credito ,, actualisacion cosntante
   private List<OutstandingBalance> outstandingBalances = new ArrayList<>(); //saldo pendietne as pagar
-  private List<DepositDto> depositAmountDtos = new ArrayList<>(); //deposito o pago de deuda
-  private List<WithdrawalDto> withdrawalAmountDtos = new ArrayList<>(); //retiro de saldo del credito
+  private List<DepositAmountDto> depositAmountDtos = new ArrayList<>(); //deposito o pago de deuda
+  private List<WithdrawalAmountDto> withdrawalAmountDtos = new ArrayList<>(); //retiro de saldo del credito
 
 
 

@@ -1,5 +1,6 @@
 package com.lizana.transaction.application.validaciones;
 
+import com.lizana.transaction.domain.documents.Movement;
 import com.lizana.transaction.domain.dtos.BankAccountDto;
 import com.lizana.transaction.domain.dtos.MovementDto;
 import com.lizana.transaction.infrastructure.service.WebClientService;
@@ -32,6 +33,7 @@ public class ValidateBalance {
   }
 
   public Mono<Boolean> validateAccountexist(MovementDto movementDto) {
+    //valida que la cuenta de destino exista
     Mono<BankAccountDto> destinationAccountMono =
         webClientService.getFromExternalServiceBankAccount(movementDto.getDestinationMovement());
 
@@ -45,4 +47,6 @@ public class ValidateBalance {
         })
         .switchIfEmpty(Mono.just(false)); // En caso de que la cuenta de destino no exista
   }
+
+
 }

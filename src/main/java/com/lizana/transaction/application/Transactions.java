@@ -16,6 +16,8 @@ public class Transactions {
   WebClientService webClientService;
   @Value("${URI_TRANSFER}")
   private String URI_TRANSFER;
+  @Value("${URI_CREDIT}")
+  private String URI_CREDIT;
 
   public Mono<MovementDto> transferBetweenAaccounts(MovementDto movementDto) {
 
@@ -25,11 +27,23 @@ public class Transactions {
           return dto;
         })
         .orElseThrow(() -> new CustomExeption("No se pudo completar asignar un id"));
-      return webClientService.webclientpost( updatedMovementDto, URI_TRANSFER, MovementDto.class)
-          .onErrorResume(throwable -> {
-         //error  durante la solicitud
-            return Mono.error(new CustomExeption("No se pudo completar la operación. Inténtelo de nuevo más tarde."));
-          });
+    return webClientService.webclientpost(updatedMovementDto, URI_TRANSFER, MovementDto.class)
+        .onErrorResume(throwable -> {
+          //error  durante la solicitud
+          return Mono.error(new CustomExeption(
+              "No se pudo completar la operación. Inténtelo de nuevo más tarde."));
+        });
 
+  }
+
+  public Mono<MovementDto> creditToPay(MovementDto movementDto) {
+    MovementDto updateCredit = Optional.of(movementDto).map(dto -> {
+      dto.setMovementId("creditpay" + UUID.randomUUID().toString());
+      return dto;
+    }).orElseThrow(() -> new CustomExeption("no se inserto el id correctametne"));
+    return webClientService.webclientpost(updateCredit, URI_CREDIT, MovementDto.class)
+        .onErrorResume(Throwable -> {
+          return Mono.error(new CustomExeption("NO SE COMPLETO LA OPERACION"));
+        });
   }
 }
